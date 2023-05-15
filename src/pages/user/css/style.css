@@ -1,0 +1,14 @@
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.App {
+    display: flex;
+    justify-content: center;
+    
+  }
+
+  .errors{
+    color:red
+  }
