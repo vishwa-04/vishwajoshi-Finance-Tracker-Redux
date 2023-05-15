@@ -1,25 +1,24 @@
-import React from 'react'
-import { useParams } from 'react-router-dom';
-// import AddTransaction from '../AddTransaction/AddTransaction'
-import FinanceTracker from '../user';
-import { useTransContext } from '../Contexts/formValuesContext';
+import React from "react";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import FinanceTracker from "../user";
+// import { updateTransaction } from "../Redux/Transactionduck";
 
 export default function UpdateTransaction() {
-  const {TransactionData,setTransactionData}=useTransContext()
-    const { id } = useParams();
-    const login = JSON.parse(localStorage.getItem("login"));
-    // const items = login[0].email;
-    // const data = JSON.parse(localStorage.getItem(items));
-    let data = TransactionData;
-    // console.log(data);
-    const index = data.findIndex((ele) => ele.id == id);
-
+  const { id } = useParams();
+  const transaction_redux = useSelector((state) =>
+    state.transaction.find((ele) => ele.id == id)
+  );
+  const login = JSON.parse(localStorage.getItem("login"));
   return (
     <div>
       {
-        index<0 ?(<h1>no data found</h1>):(<FinanceTracker updateFormValue={data[index]} index={index} isUpdate={true}/>)
+        <FinanceTracker
+          id={id}
+          updateFormValue={transaction_redux}
+          isUpdate={true}
+        />
       }
-      
     </div>
   );
 }

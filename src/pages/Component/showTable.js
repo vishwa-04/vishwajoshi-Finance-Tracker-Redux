@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import "../user/showTable.css";
 import { useTransContext } from "../Contexts/formValuesContext";
 import { Transaction } from "./transactiontable";
+import { useSelector } from "react-redux";
+import { Cookies } from "react-cookie";
 
 const months = [
   "January 2023",
@@ -19,15 +21,18 @@ const months = [
   "December 2023",
 ];
 const ShowTable = () => {
-  const { TransactionData, setTransactionData } = useTransContext();
-  const [data, setData] = useState(TransactionData);
+  const transaction_redux = useSelector((state) => state.transaction);
+
+  const cookie = new Cookies();
+
+  const [data, setData] = useState(transaction_redux);
   const [groupData, setGroupData] = useState([]);
-  const [getData, setgetData] = useState(TransactionData);
+  const [getData, setgetData] = useState(transaction_redux);
   const navigate = useNavigate();
 
   useEffect(() => {
-    setgetData(TransactionData);
-  }, [TransactionData]);
+    setgetData(transaction_redux);
+  }, [transaction_redux]);
 
   const [groupValue, setGroupValue] = useState("");
   const [isGrouped, setIsGrouped] = useState(false);
@@ -72,12 +77,11 @@ const ShowTable = () => {
     }
   }
   function handleLogout() {
-    localStorage.removeItem("login");
+    cookie.remove("mycookie");
     navigate("/login");
   }
 
-  debugger;
-  console.log(getData, "LsxLJX>>>>>>>>");
+  // console.log(getData, "LsxLJX>>>>>>>>");
   return (
     <>
       <div>

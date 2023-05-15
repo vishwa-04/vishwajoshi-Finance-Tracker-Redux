@@ -2,12 +2,18 @@ import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import "../user/css/transactiontable.css";
 import { useTransContext } from "../Contexts/formValuesContext";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteTransaction } from "../Redux/Transactionduck";
 
 export const Transaction = (props) => {
+  const transaction_redux = useSelector((state) => state.transaction);
+  console.log(transaction_redux, "this is my redux");
+  const dispatch = useDispatch();
+
   const { TransactionData, setTransactionData } = useTransContext();
   const sortOrder = useRef("");
   const [lastSortKey, setlastSortKey] = useState(null);
-  // const [groupData, setGroupData] = useState([]);
+
   const [getData, setGetData] = useState(props.getData);
 
   useEffect(() => {
@@ -40,8 +46,6 @@ export const Transaction = (props) => {
         a[currentKey].localeCompare(b[currentKey])
       );
       setGetData(sort);
-
-      // console.log(sort, sortOrder.current, "sort : sortOrder");
     } else if (sortOrder.current === "desc" && type === undefined) {
       let sort = [...getData].sort((a, b) =>
         b[currentKey].localeCompare(a[currentKey])
@@ -49,8 +53,7 @@ export const Transaction = (props) => {
       setGetData(sort);
     } else if (sortOrder.current === "" && type === undefined) {
       let sort = props.getData;
-      // let sort = TransactionData;
-      // console.log(sort, sortOrder.current, "sort : sortOrder");
+
       setGetData(sort);
     }
 
@@ -59,39 +62,25 @@ export const Transaction = (props) => {
         return a[currentKey] - b[currentKey];
       });
       setGetData(sort);
-
-      // console.log("parseInt asc");
     } else if (sortOrder.current === "desc" && type === "number") {
       let sort = [...getData].sort(function (a, b) {
         return b[currentKey] - a[currentKey];
       });
       setGetData(sort);
-
-      // console.log("parseInt desc");
     }
     if (sortOrder.current === "" && type === "number") {
       let sort = props.getData;
-      // let sort = TransactionData;
       setGetData(sort);
-
-      // console.log("parseInt normal");
     }
     if (sortOrder.current === "asc" && type === "month") {
       let sort = [...getData].sort(sorter);
       setGetData(sort);
-
-      // console.log(sort, "sort asc");
     } else if (sortOrder.current === "desc" && type === "month") {
       let sort = [...getData].sort(sorterReverse);
       setGetData(sort);
-
-      // console.log(sort, "sort desc");
     } else if (sortOrder.current === "" && type === "month") {
       let sort = props.getData;
-      // let sort = TransactionData;
       setGetData(sort);
-
-      // console.log(sort, "sort normal");
     }
   }
 
@@ -118,7 +107,6 @@ export const Transaction = (props) => {
   function filterBySearch(e) {
     let querySearch = e.target.value;
     let filterData = [...props.getData];
-    // console.log(filterData,"this is filter data");
     if (querySearch !== "") {
       const filterTable = filterData.filter((items) => {
         return Object.keys(items).some(
@@ -138,21 +126,16 @@ export const Transaction = (props) => {
   }
 
   function deleteRecord(id) {
-    let filterData = [...getData];
-    console.log(props.getData);
-    const deleteData = filterData.filter((element, index) => {
-      return element.id !== id;
-    });
-    let filterContextData = [...TransactionData];
-    console.log(props.getData);
-    const deleteContextData = filterContextData.filter((element, index) => {
-      return element.id !== id;
-    });
-    setGetData(deleteData);
-    setTransactionData(deleteContextData);
-  }
+    // let filterData = [...getData];
+    // console.log(props.getData);
+    // const deleteData = filterData.filter((element, index) => {
+    //   return element.id !== id;
+    // });
 
-  // console.log(getData, "::::170");
+    dispatch(deleteTransaction({ id }));
+
+    // setTransactionData(deleteContextData);
+  }
 
   return (
     <>

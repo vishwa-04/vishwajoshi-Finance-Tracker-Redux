@@ -133,3 +133,37 @@ export const DefaultJson = [
     id: 11,
   },
 ];
+export const DefaultUser = [
+  [
+    {
+      username: "vishwa",
+      email: "joshivishwa9@gmail.com",
+      password: "123",
+      id: 1,
+    },
+    {
+      username: "vishwa",
+      email: "drashti@gmail.com",
+      password: "123",
+      id: 2,
+    },
+    {
+      username: "sumit",
+      email: "sumit@gmail.com",
+      password: "123",
+      id: 3,
+    },
+    {
+      username: "ManthanPatel",
+      email: "snehajoshi@gmail.com",
+      password: "123",
+      id: 4,
+    },
+    {
+      username: "sunny",
+      email: "sumit1@gmail.com",
+      password: "123",
+      id: 5,
+    },
+  ],
+];

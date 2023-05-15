@@ -5,11 +5,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { useTransContext } from "../Contexts/formValuesContext";
+import { useSelector, useDispatch } from "react-redux";
+import { addTransaction, updateTransaction } from "../Redux/Transactionduck";
 import "./css/style.css";
 
 function FinanceTracker({ updateFormValue, isUpdate, index }) {
-  // console.log(updateFormValue,"updateformValue");
   let initialValues;
   updateFormValue
     ? (initialValues = {
@@ -37,8 +37,9 @@ function FinanceTracker({ updateFormValue, isUpdate, index }) {
   const [formValues, setFormValues] = useState(initialValues);
   const [isSubmit, setIsSubmit] = useState(false);
 
-  const { TransactionData, setTransactionData } = useTransContext();
-  console.log(TransactionData, "this is context of create form");
+  const transaction_redux = useSelector((state) => state.transaction);
+  console.log(transaction_redux, "this is my redux");
+  const dispatch = useDispatch();
 
   const validationSchema = yup.object().shape({
     transDate: yup.string().required("Date is a required field"),
@@ -116,35 +117,24 @@ function FinanceTracker({ updateFormValue, isUpdate, index }) {
   useEffect(() => {
     if (isSubmit) {
       const login = JSON.parse(localStorage.getItem("login"));
-      let data = TransactionData;
+      let data = transaction_redux;
       console.log(data, "this is data");
       if (data !== null) {
-        // const data = JSON.parse(localStorage.getItem(items));
-
-        if (id) {
-          for (const e in data) {
-            if (parseInt(data[e].id) === parseInt(id)) {
-              formValues["id"] = parseInt(id);
-              data[e] = formValues;
-            }
-            console.log(e, "this is key");
-          }
+        if (updateFormValue) {
+          dispatch(updateTransaction({ formValues, id: id }));
         } else {
           let previousId = data[data.length - 1].id;
           formValues["id"] = previousId + 1;
-          data.push(formValues);
         }
-        setTransactionData(data);
-        // localStorage.setItem(items, JSON.stringify(data));
+        dispatch(addTransaction(formValues));
       } else {
         formValues["id"] = 1;
-        setTransactionData([formValues]);
+
+        dispatch(addTransaction([formValues]));
         console.log("this is form values", formValues);
-        // localStorage.setItem(items, JSON.stringify([formValues]));
       }
       navigate("/showTable");
     }
-    //eslint-disable-next-line
   }, [isSubmit]);
 
   const handelRemoveImage = () => {
@@ -157,7 +147,6 @@ function FinanceTracker({ updateFormValue, isUpdate, index }) {
 
   return (
     <div className="App">
-      {/* {console.table(formValues)} */}
       <div className="container">
         <h1>Finance Tracker</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="form-control">
