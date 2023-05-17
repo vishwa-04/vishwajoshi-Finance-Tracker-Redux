@@ -20,6 +20,7 @@ import Error from "./pages/Component/Error";
 import { Cookies, CookiesProvider } from "react-cookie";
 import { FinanceStore } from "./pages/Redux/store";
 import { Provider } from "react-redux";
+import ErrorBoundary from "./pages/Component/ErrorBoundary";
 
 const Protected = (props) => {
   const login = new Cookies().get("mycookie");
@@ -64,10 +65,13 @@ const router = createBrowserRouter(
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <CookiesProvider>
-    <Provider store={FinanceStore}>
-      <RouterProvider router={router} />
-    </Provider>
-  </CookiesProvider>
+  <ErrorBoundary>
+    <CookiesProvider>
+      <Provider store={FinanceStore}>
+    
+        <RouterProvider router={router} />
+      </Provider>
+    </CookiesProvider>
+  </ErrorBoundary>
 );
 reportWebVitals();

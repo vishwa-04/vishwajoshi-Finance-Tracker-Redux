@@ -34,12 +34,13 @@ function FinanceTracker({ updateFormValue, isUpdate, index }) {
       });
 
   const navigate = useNavigate();
+  const { id } = useParams();
   const [formValues, setFormValues] = useState(initialValues);
   const [isSubmit, setIsSubmit] = useState(false);
-
   const transaction_redux = useSelector((state) => state.transaction);
-  console.log(transaction_redux, "this is my redux");
   const dispatch = useDispatch();
+  const date = new Date();
+  let year = date.getFullYear();
 
   const validationSchema = yup.object().shape({
     transDate: yup.string().required("Date is a required field"),
@@ -111,14 +112,10 @@ function FinanceTracker({ updateFormValue, isUpdate, index }) {
       }
     }
   };
-  console.log(formValues, "formVAlues");
 
-  const { id } = useParams();
   useEffect(() => {
     if (isSubmit) {
-      const login = JSON.parse(localStorage.getItem("login"));
       let data = transaction_redux;
-      console.log(data, "this is data");
       if (data !== null) {
         if (updateFormValue) {
           dispatch(updateTransaction({ formValues, id: id }));
@@ -129,9 +126,7 @@ function FinanceTracker({ updateFormValue, isUpdate, index }) {
         dispatch(addTransaction(formValues));
       } else {
         formValues["id"] = 1;
-
         dispatch(addTransaction([formValues]));
-        console.log("this is form values", formValues);
       }
       navigate("/showTable");
     }
@@ -141,9 +136,6 @@ function FinanceTracker({ updateFormValue, isUpdate, index }) {
     setFormValues({ ...formValues, filename: "" });
     setValue("filename", "");
   };
-
-  const date = new Date();
-  let year = date.getFullYear();
 
   return (
     <div className="App">
@@ -161,8 +153,6 @@ function FinanceTracker({ updateFormValue, isUpdate, index }) {
                     <input
                       type="date"
                       name="transDate"
-                      // value={formValues.transDate}
-
                       {...register("transDate")}
                     ></input>
                     <tr>
@@ -179,12 +169,7 @@ function FinanceTracker({ updateFormValue, isUpdate, index }) {
                     <label>Month Year</label>
                   </td>
                   <td>
-                    <select
-                      id="getmonth"
-                      name="month"
-                      // value={formValues.month}
-                      {...register("month")}
-                    >
+                    <select id="getmonth" name="month" {...register("month")}>
                       <option value="">--Select Month--</option>
                       <option value={`Janaury ${year}`}>Janaury {year}</option>
                       <option value={`February ${year}`}>
@@ -218,7 +203,6 @@ function FinanceTracker({ updateFormValue, isUpdate, index }) {
                     <select
                       id="transactionType"
                       name="transType"
-                      // value={formValues.transType}
                       {...register("transType")}
                     >
                       <option hidden disabled value="" selected>
@@ -236,12 +220,7 @@ function FinanceTracker({ updateFormValue, isUpdate, index }) {
                     <label>From Account</label>
                   </td>
                   <td>
-                    <select
-                      id="frmAcc"
-                      name="frmAcc"
-                      // value={formValues.frmAcc}
-                      {...register("frmAcc")}
-                    >
+                    <select id="frmAcc" name="frmAcc" {...register("frmAcc")}>
                       <option hidden disabled value="" selected>
                         --Select From Account--
                       </option>
@@ -260,12 +239,7 @@ function FinanceTracker({ updateFormValue, isUpdate, index }) {
                     <label>To Account</label>
                   </td>
                   <td>
-                    <select
-                      id="toAcc"
-                      name="toAcc"
-                      // value={formValues.toAcc}
-                      {...register("toAcc")}
-                    >
+                    <select id="toAcc" name="toAcc" {...register("toAcc")}>
                       <option hidden disabled value="" selected>
                         --Select To Account--
                       </option>
@@ -288,8 +262,6 @@ function FinanceTracker({ updateFormValue, isUpdate, index }) {
                     <input
                       type="number"
                       name="amount"
-                      // value={formValues.amount}
-
                       {...register("amount")}
                     ></input>
                     <div className="errors">{errors.amount?.message}</div>
@@ -318,7 +290,6 @@ function FinanceTracker({ updateFormValue, isUpdate, index }) {
                       <input
                         type="file"
                         id="myFile"
-                        // value={formValues.filename}
                         {...register("filename")}
                       />
                     )}
@@ -334,8 +305,6 @@ function FinanceTracker({ updateFormValue, isUpdate, index }) {
                       rows="5"
                       cols="20"
                       name="notes"
-                      // value={formValues.notes}
-
                       {...register("notes")}
                     ></textarea>
                     <div className="errors">{errors.notes?.message}</div>

@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import "../user/css/transactiontable.css";
-import { useTransContext } from "../Contexts/formValuesContext";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteTransaction } from "../Redux/Transactionduck";
 
@@ -10,7 +9,6 @@ export const Transaction = (props) => {
   console.log(transaction_redux, "this is my redux");
   const dispatch = useDispatch();
 
-  const { TransactionData, setTransactionData } = useTransContext();
   const sortOrder = useRef("");
   const [lastSortKey, setlastSortKey] = useState(null);
 

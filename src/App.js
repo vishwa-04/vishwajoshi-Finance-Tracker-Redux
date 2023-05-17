@@ -1,11 +1,13 @@
-import './App.css';
-import FinanceTracker from './pages/user';
-
+import "./App.css";
+import ErrorBoundary from "./pages/Component/ErrorBoundary";
+// import ErrorBoundary from "./pages/Component/ErrorBoundary";
+import FinanceTracker from "./pages/user";
 
 function App() {
   return (
     <div className="App">
-<FinanceTracker/>
+      <FinanceTracker />
+      
     </div>
   );
 }

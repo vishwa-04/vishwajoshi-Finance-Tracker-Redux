@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../user/showTable.css";
-import { useTransContext } from "../Contexts/formValuesContext";
+
 import { Transaction } from "./transactiontable";
 import { useSelector } from "react-redux";
 import { Cookies } from "react-cookie";
@@ -81,7 +81,6 @@ const ShowTable = () => {
     navigate("/login");
   }
 
-  // console.log(getData, "LsxLJX>>>>>>>>");
   return (
     <>
       <div>
